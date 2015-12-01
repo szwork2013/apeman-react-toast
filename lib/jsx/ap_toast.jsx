@@ -9,6 +9,7 @@ const React = require('react'),
     extend = require('extend'),
     classnames = require('classnames'),
     types = React.PropTypes,
+    ApTouchable = require('apeman-react-touchable')['ApTouchable'],
     ApIcon = require('apeman-react-icon')['ApIcon'];
 
 /** @lends ApToast */
@@ -108,13 +109,13 @@ let ApToast = React.createClass({
     //------------------
     startTicking: function () {
         let s = this;
-        s.clearTimeout(s._tickTimer);
+        clearTimeout(s._tickTimer);
         s._ticking = true;
         s.doTick();
     },
     stopTicking: function () {
         let s = this;
-        s.clearTimeout(s._tickTimer);
+        clearTimeout(s._tickTimer);
         s._ticking = false;
     },
     doTick: function () {
@@ -161,7 +162,7 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props,
             state = s.state;
-        return (state.items || '').map((text, i) => {
+        return (state.items || '').split(',').map((text, i) => {
             return (
                 <div key={`toast-${i}`} className="ap-toast-item">
                     <ApIcon className={props.icon}/>

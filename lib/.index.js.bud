@@ -13,7 +13,11 @@ module.exports = apeTmpl.indexJsBud({
     dirname: __dirname,
     subclasses: [
         'ApToast',
-        'ApToastStyle'
+        'ApInfoToast',
+        'ApWarnToast',
+        'ApErrorToast',
+        'ApToastStyle',
+        'ApToastGroup'
     ]
 });
 
