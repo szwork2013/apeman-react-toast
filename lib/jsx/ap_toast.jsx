@@ -29,7 +29,9 @@ let ApToast = React.createClass({
 
     mixins: [],
 
-    statics: {},
+    statics: {
+        itemJoiner: '____'
+    },
 
     getInitialState: function () {
         return {
@@ -135,32 +137,32 @@ let ApToast = React.createClass({
         if (!message) {
             return;
         }
-        let items = (s.state.items || '').split(',');
+        let items = (s.state.items || '').split(ApToast.itemJoiner);
         let duplicate = items[items.length - 1] === message;
         if (duplicate) {
             return;
         }
         s.setState({
-            items: items.concat(message).join(',')
+            items: items.concat(message).join(ApToast.itemJoiner)
         });
     },
     shiftToastItem: function () {
         let s = this;
-        let items = (s.state.items || '').split(',');
+        let items = (s.state.items || '').split(ApToast.itemJoiner);
         if (!items.length) {
             return;
         }
         s.setState({
-            items: items.slice(1).join(',')
+            items: items.slice(1).join(ApToast.itemJoiner)
         });
     },
     dismissToastItem: function (message) {
         let s = this;
-        let items = (s.state.items || '').split(',');
+        let items = (s.state.items || '').split(ApToast.itemJoiner);
         s.setState({
             items: items.filter((filtering)=> {
                 return filtering != message;
-            })
+            }).join(ApToast.itemJoiner)
         });
     },
     //------------------
@@ -172,9 +174,9 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props,
             state = s.state;
-        return (state.items || '').split(',').filter(arrayfilter.emptyReject()).map((text, i) => {
+        return (state.items || '').split(ApToast.itemJoiner).filter(arrayfilter.emptyReject()).map((text, i) => {
             return (
-                <div key={`toast-${i}`}>
+                <div key={`toast-${text}`}>
                     <ApTouchable onTap={()=>s.dismissToastItem(text)}>
                         <div className="ap-toast-item">
                             <ApIcon className={classnames('ap-toast-item-icon', props.icon)}/>

@@ -71,6 +71,9 @@ let ApToastStyle = React.createClass({
                     display: `block`,
                     padding: `2px 0`
                 },
+                '.ap-toast-item:active': {
+                    opacity: 0.8
+                },
                 '.ap-info-toast .ap-toast-inner': {
                     color: `${infoColor}`,
                     border: `1px solid ${infoColor}`
@@ -88,7 +91,8 @@ let ApToastStyle = React.createClass({
                 },
                 '.ap-toast-text': {
                     display: `inline-block`,
-                    margin: `0 2px`
+                    margin: `0 2px`,
+                    cursor: `default`
                 }
             },
             smallMediaData = {},
