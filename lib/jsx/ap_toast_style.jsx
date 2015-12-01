@@ -59,12 +59,13 @@ let ApToastStyle = React.createClass({
                     maxWidth: `420px`,
                     display: `inline-block`,
                     textAlign: `left`,
-                    padding: `2px`,
+                    padding: `2px 4px`,
                     boxShadow: `1px 1px 2px rgba(0,0,0,0.33)`,
                     backgroundColor: `rgba(255, 255, 255, 0.8)`,
                     color: `${normalColor}`,
                     border: `1px solid ${normalColor}`,
-                    fontSize: `14px`
+                    fontSize: `14px`,
+                    width: `240px`
                 },
                 '.ap-toast-item': {
                     display: `block`,
@@ -81,6 +82,13 @@ let ApToastStyle = React.createClass({
                 '.ap-error-toast .ap-toast-inner': {
                     color: `${errorColor}`,
                     border: `1px solid ${errorColor}`
+                },
+                '.ap-toast-item-icon': {
+                    display: `inline-block`
+                },
+                '.ap-toast-text': {
+                    display: `inline-block`,
+                    margin: `0 2px`
                 }
             },
             smallMediaData = {},

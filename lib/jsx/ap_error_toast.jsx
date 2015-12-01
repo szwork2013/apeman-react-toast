@@ -39,7 +39,7 @@ let ApErrorToast = React.createClass({
         return {
             message: null,
             duration: 2000,
-            icon: null
+            icon: 'fa fa-check-circle'
         };
     },
 

@@ -8,6 +8,7 @@
 const React = require('react'),
     extend = require('extend'),
     classnames = require('classnames'),
+    arrayfilter = require('arrayfilter'),
     types = React.PropTypes,
     ApTouchable = require('apeman-react-touchable')['ApTouchable'],
     ApIcon = require('apeman-react-icon')['ApIcon'];
@@ -78,12 +79,12 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props;
         s.startTicking();
-        s.pushToast(props.message);
+        s.pushToastItem(props.message);
     },
 
     componentWillReceiveProps: function (nextProps) {
         let s = this;
-        s.pushToast(nextProps.message);
+        s.pushToastItem(nextProps.message);
     },
 
     shouldComponentUpdate: function (nextProps, nextState) {
@@ -125,11 +126,11 @@ let ApToast = React.createClass({
             return;
         }
         s._tickTimer = setTimeout(()=> {
-            s.shiftToast();
+            s.shiftToastItem();
             s.doTick();
         }, props.duration);
     },
-    pushToast: function (message) {
+    pushToastItem: function (message) {
         let s = this;
         if (!message) {
             return;
@@ -143,7 +144,7 @@ let ApToast = React.createClass({
             items: items.concat(message).join(',')
         });
     },
-    shiftToast: function () {
+    shiftToastItem: function () {
         let s = this;
         let items = (s.state.items || '').split(',');
         if (!items.length) {
@@ -151,6 +152,15 @@ let ApToast = React.createClass({
         }
         s.setState({
             items: items.slice(1).join(',')
+        });
+    },
+    dismissToastItem: function (message) {
+        let s = this;
+        let items = (s.state.items || '').split(',');
+        s.setState({
+            items: items.filter((filtering)=> {
+                return filtering != message;
+            })
         });
     },
     //------------------
@@ -162,11 +172,15 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props,
             state = s.state;
-        return (state.items || '').split(',').map((text, i) => {
+        return (state.items || '').split(',').filter(arrayfilter.emptyReject()).map((text, i) => {
             return (
-                <div key={`toast-${i}`} className="ap-toast-item">
-                    <ApIcon className={props.icon}/>
-                    <span className="ap-toast-text">{text}</span>
+                <div key={`toast-${i}`}>
+                    <ApTouchable onTap={()=>s.dismissToastItem(text)}>
+                        <div className="ap-toast-item">
+                            <ApIcon className={classnames('ap-toast-item-icon', props.icon)}/>
+                            <span className="ap-toast-text">{text}</span>
+                        </div>
+                    </ApTouchable>
                 </div>
             )
         });

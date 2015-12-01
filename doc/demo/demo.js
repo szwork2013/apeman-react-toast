@@ -115,7 +115,7 @@ let ApErrorToast = React.createClass({
         return {
             message: null,
             duration: 2000,
-            icon: null
+            icon: 'fa fa-check-circle'
         };
     },
 
@@ -175,7 +175,7 @@ let ApInfoToast = React.createClass({
         return {
             message: null,
             duration: 2000,
-            icon: null
+            icon: 'fa fa-exclamation-circle'
         };
     },
 
@@ -202,6 +202,7 @@ module.exports = ApInfoToast;
 const React = require('react'),
       extend = require('extend'),
       classnames = require('classnames'),
+      arrayfilter = require('arrayfilter'),
       types = React.PropTypes,
       ApTouchable = require('apeman-react-touchable')['ApTouchable'],
       ApIcon = require('apeman-react-icon')['ApIcon'];
@@ -271,12 +272,12 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props;
         s.startTicking();
-        s.pushToast(props.message);
+        s.pushToastItem(props.message);
     },
 
     componentWillReceiveProps: function (nextProps) {
         let s = this;
-        s.pushToast(nextProps.message);
+        s.pushToastItem(nextProps.message);
     },
 
     shouldComponentUpdate: function (nextProps, nextState) {
@@ -318,11 +319,11 @@ let ApToast = React.createClass({
             return;
         }
         s._tickTimer = setTimeout(() => {
-            s.shiftToast();
+            s.shiftToastItem();
             s.doTick();
         }, props.duration);
     },
-    pushToast: function (message) {
+    pushToastItem: function (message) {
         let s = this;
         if (!message) {
             return;
@@ -336,7 +337,7 @@ let ApToast = React.createClass({
             items: items.concat(message).join(',')
         });
     },
-    shiftToast: function () {
+    shiftToastItem: function () {
         let s = this;
         let items = (s.state.items || '').split(',');
         if (!items.length) {
@@ -344,6 +345,15 @@ let ApToast = React.createClass({
         }
         s.setState({
             items: items.slice(1).join(',')
+        });
+    },
+    dismissToastItem: function (message) {
+        let s = this;
+        let items = (s.state.items || '').split(',');
+        s.setState({
+            items: items.filter(filtering => {
+                return filtering != message;
+            })
         });
     },
     //------------------
@@ -355,15 +365,23 @@ let ApToast = React.createClass({
         let s = this,
             props = s.props,
             state = s.state;
-        return (state.items || '').split(',').map((text, i) => {
+        return (state.items || '').split(',').filter(arrayfilter.emptyReject()).map((text, i) => {
             return React.createElement(
                 'div',
-                { key: `toast-${ i }`, className: 'ap-toast-item' },
-                React.createElement(ApIcon, { className: props.icon }),
+                { key: `toast-${ i }` },
                 React.createElement(
-                    'span',
-                    { className: 'ap-toast-text' },
-                    text
+                    ApTouchable,
+                    { onTap: () => s.dismissToastItem(text) },
+                    React.createElement(
+                        'div',
+                        { className: 'ap-toast-item' },
+                        React.createElement(ApIcon, { className: classnames('ap-toast-item-icon', props.icon) }),
+                        React.createElement(
+                            'span',
+                            { className: 'ap-toast-text' },
+                            text
+                        )
+                    )
                 )
             );
         });
@@ -372,7 +390,7 @@ let ApToast = React.createClass({
 
 module.exports = ApToast;
 
-},{"apeman-react-icon":228,"apeman-react-touchable":442,"classnames":455,"extend":456,"react":639}],6:[function(require,module,exports){
+},{"apeman-react-icon":228,"apeman-react-touchable":442,"arrayfilter":445,"classnames":455,"extend":456,"react":639}],6:[function(require,module,exports){
 /**
  * Toast group.
  * @constructor ApToastGroup
@@ -465,7 +483,7 @@ let ApWarnToast = React.createClass({
         return {
             message: null,
             duration: 2000,
-            icon: null
+            icon: 'fa fa-warning'
         };
     },
 

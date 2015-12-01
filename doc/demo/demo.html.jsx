@@ -13,6 +13,7 @@ const Demo = require('./demo.component.js'),
     ApThemeStyle = require('apeman-react-theme')['ApThemeStyle'],
     basic = require('apeman-react-basic'),
     ApStyle = basic.ApStyle,
+    ApFaIconStyle = require('apeman-react-icon')['ApFaIconStyle'],
     ApHead = basic.ApHead,
     ApBody = basic.ApBody,
     ApLinks = basic.ApLinks,
@@ -27,6 +28,7 @@ module.exports = (
                 version={pkg.version}
                 icon={FAVICON_URL}>
             <ApStyle data={fs.readFileSync(stylesheets.reactDemo).toString()}></ApStyle>
+            <ApFaIconStyle></ApFaIconStyle>
             <ApThemeStyle primaryColor="#b35600"></ApThemeStyle>
             <ApToastStyle></ApToastStyle>
         </ApHead>

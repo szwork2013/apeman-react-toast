@@ -39,7 +39,7 @@ let ApInfoToast = React.createClass({
         return {
             message: null,
             duration: 2000,
-            icon: null
+            icon: 'fa fa-exclamation-circle'
         };
     },
 
